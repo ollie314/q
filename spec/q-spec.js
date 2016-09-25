@@ -1206,19 +1206,21 @@ describe("any", function() {
 
     function testReject(promises, deferreds) {
         var promise = Q.any(promises);
+        var expectedError = new Error('Rejected');
 
         for (var index = 0; index < deferreds.length; index++) {
             var deferred = deferreds[index];
             (function() {
-                deferred.reject(new Error('Rejected'));
+                deferred.reject(expectedError);
             })();
         }
 
         return Q.delay(250)
           .then(function() {
               expect(promise.isRejected()).toBe(true);
+              expect(promise.inspect().reason).toBe(expectedError);
               expect(promise.inspect().reason.message)
-              .toBe("Can't get fulfillment value from any promise, all promises were rejected.");
+              .toBe("Q can't get fulfillment value from any promise, all promises were rejected. Last error message: Rejected");
           })
           .timeout(1000);
     }
@@ -1671,6 +1673,38 @@ describe("fin", function () {
 
     });
 
+    describe("when the callback is invalid", function () {
+        describe("undefined", function () {
+            it("should have a useful error", function () {
+                var foo = {},
+                    threw = false;
+
+                try {
+                    Q().fin(foo.bar);
+                } catch (err) {
+                    expect(err.message).toBe("Q can't apply finally callback");
+                    threw = true;
+                }
+
+                expect(threw).toBe(true);
+            });
+        });
+
+        describe("not a function", function () {
+            it("should have a useful error", function () {
+                var threw = false;
+
+                try {
+                    Q().fin(123);
+                } catch (err) {
+                    expect(err.message).toBe("Q can't apply finally callback");
+                    threw = true;
+                }
+
+                expect(threw).toBe(true);
+            });
+        });
+    });
 });
 
 // Almost like "fin"
@@ -2489,6 +2523,36 @@ describe("node support", function () {
 
     });
 
+});
+
+describe("browser support", function () {
+    var _Q;
+
+    beforeEach(function() {
+        _Q = Q;
+    });
+
+    afterEach(function() {
+        Q = _Q;
+    });
+
+    it("sets the global Q object to its original value", function() {
+        if (typeof window !== 'undefined') {
+            // If window is not undefined, the tests are running in the browser
+            // assert that Q.noConflict returns window.Q to it's initial value
+            // In this context the original value of Q is undefined
+            Q.noConflict();
+            expect(Q).toEqual(undefined);
+        }
+    });
+
+    it("throws an error if Q.noConflict is called in node", function () {
+        if (typeof window === 'undefined') {
+            // If window is undefined the tests are being run in node, and
+            // Q.noConflict should throw an error
+            expect(Q.noConflict).toThrow();
+        }
+    });
 });
 
 describe("isPromise", function () {

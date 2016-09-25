@@ -1,4 +1,24 @@
-<!-- vim:ts=4:sts=4:sw=4:et:tw=70 -->
+ - Q.any gives an error message from the last rejected promise
+ - Throw if callback supplied to "finally" is invalid (@grahamrhay)
+
+## 1.4.1
+
+ - Address an issue that prevented Q from being used as a `<script>` for
+   Firefox add-ons. Q can now be used in any environment that provides `window`
+   or `self` globals, favoring `window` since add-ons have an an immutable
+   `self` that is distinct from `window`.
+
+## 1.4.0
+
+ - Add `noConflict` support for use in `<script>` (@jahnjw).
+
+## 1.3.0
+
+ - Add tracking for unhandled and handled rejections in Node.js (@benjamingr).
+
+## 1.2.1
+
+ - Fix Node.js environment detection for modern Browserify (@kahnjw).
 
 ## 1.2.0
 

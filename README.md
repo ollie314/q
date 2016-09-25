@@ -1,8 +1,7 @@
-[![Build Status](https://secure.travis-ci.org/kriskowal/q.png?branch=master)](http://travis-ci.org/kriskowal/q)
+[![Build Status](https://secure.travis-ci.org/kriskowal/q.svg?branch=master)](http://travis-ci.org/kriskowal/q)
 
 <a href="http://promises-aplus.github.com/promises-spec">
-    <img src="http://kriskowal.github.io/q/q.png"
-         align="right" alt="Q logo" />
+    <img src="http://kriskowal.github.io/q/q.png" align="right" alt="Q logo" />
 </a>
 
 *This is Q version 1, from the `v1` branch in Git. This documentation applies to
@@ -386,7 +385,7 @@ return funcs.reduce(Q.when, Q(initialVal));
 
 ### Handling Errors
 
-One sometimes-unintuive aspect of promises is that if you throw an
+One sometimes-unintuitive aspect of promises is that if you throw an
 exception in the fulfillment handler, it will not be caught by the error
 handler.
 
@@ -876,6 +875,6 @@ You can view the results of the Q test suite [in your browser][tests]!
 
 ## License
 
-Copyright 2009–2015 Kristopher Michael Kowal and contributors
+Copyright 2009–2016 Kristopher Michael Kowal and contributors
 MIT License (enclosed)
 
